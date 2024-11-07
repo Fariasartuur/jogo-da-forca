@@ -291,9 +291,9 @@ void animais(char tabuleiro[TAMANHO_MAX], int num)
             esperarEnter();
             break;
         }
-        case 2: // Jirafa
+        case 2: // Girafa
         {
-            strcpy(palavra, "jirafa");
+            strcpy(palavra, "girafa");
             cont = contador(palavra);
             imprimirJogo(cont, palavra, tabuleiro);
             do

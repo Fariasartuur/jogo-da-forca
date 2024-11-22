@@ -7,6 +7,7 @@
 #include <ctype.h>
 
 #define TAMANHO_MAX 20
+#define JOGADAS_MAX 6
 
 void limparBuffer()
 {
@@ -23,11 +24,9 @@ void esperarEnter()
 
 int numAleatorio()
 {
-
     int numRand = rand() % 5 + 1;
 
     return numRand;
-
 }
 
 void limparTela()
@@ -70,7 +69,7 @@ char verificar(char tabuleiro[TAMANHO_MAX], char palavra[TAMANHO_MAX], int *joga
     char letra;
     bool letraIncorreta = true;
 
-    printf("Tentativas (%d/6)\n", *jogadas);
+    printf("Tentativas (%d/%d)\n", *jogadas, JOGADAS_MAX);
     printf("\nInsira uma letra: ");
     scanf(" %c", &letra);
     letra = tolower(letra);
@@ -112,7 +111,7 @@ char verificar(char tabuleiro[TAMANHO_MAX], char palavra[TAMANHO_MAX], int *joga
     {
         printf("Letra incorreta.\n");
         (*jogadas)++;
-        if (*jogadas >= 6)
+        if (*jogadas >= JOGADAS_MAX)
         {
             *pnt = false; // termina o jogo se atingir o limite de jogadas
         }
@@ -129,131 +128,68 @@ char verificar(char tabuleiro[TAMANHO_MAX], char palavra[TAMANHO_MAX], int *joga
         }
     }
 
-
-
     return tabuleiro[TAMANHO_MAX];
+}
+
+void jogo(char palavra[TAMANHO_MAX], char tabuleiro[TAMANHO_MAX]){
+    int cont = contador(palavra);
+    int jogadas = 0;
+    bool final = true;
+    imprimirJogo(cont, palavra, tabuleiro);
+
+    do
+    {
+        tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
+    } while (jogadas < JOGADAS_MAX && final);
+
+    if (!final)
+    {
+        printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
+    }
+    else
+    {
+        printf("Tentativas (%d/%d)\n", jogadas, JOGADAS_MAX);
+        printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
+    }
 }
 
 void PM(char tabuleiro[TAMANHO_MAX], int num)
 {
     char palavra[TAMANHO_MAX];
-    int cont;
-    int jogadas = 0;
-    bool final = true;
 
     switch (num){
         case 1: //Brasil
         {
             strcpy(palavra, "brasil");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 2: // Japao
         {
             strcpy(palavra, "japao");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 3: // Australia
         {
-           strcpy(palavra, "australia");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            strcpy(palavra, "australia");
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 4: // Egito
         {
             strcpy(palavra, "egito");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 5: // Canada
         {
             strcpy(palavra, "canada");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-            
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
@@ -263,250 +199,83 @@ void PM(char tabuleiro[TAMANHO_MAX], int num)
 void animais(char tabuleiro[TAMANHO_MAX], int num)
 {
     char palavra[TAMANHO_MAX];
-    int cont;
-    int jogadas = 0;
-    bool final = true;
 
     switch (num){
         case 1: // Elefante
         {
             strcpy(palavra, "elefante");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 2: // Girafa
         {
             strcpy(palavra, "girafa");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 3: // Borboleta
         {
-           strcpy(palavra, "borboleta");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            strcpy(palavra, "borboleta");
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 4: // Tubarao
         {
             strcpy(palavra, "tubarao");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 5: // Pinguim
         {
             strcpy(palavra, "pinguim");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-            
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
     }
-
 }
 
 void FF(char tabuleiro[TAMANHO_MAX], int num)
 {
     char palavra[TAMANHO_MAX];
-    int cont;
-    int jogadas = 0;
-    bool final = true;
 
     switch (num){
         case 1: // Titanic
         {
             strcpy(palavra, "titanic");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 2: // Star Wars
         {
             strcpy(palavra, "star-wars");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 3: // O Poderoso Chefão
         {
-           strcpy(palavra, "o-poderoso-chefao");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            strcpy(palavra, "o-poderoso-chefao");
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 4: // Matrix
         {
             strcpy(palavra, "matrix");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 5: // Avatar
         {
             strcpy(palavra, "avatar");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-            
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
@@ -516,258 +285,88 @@ void FF(char tabuleiro[TAMANHO_MAX], int num)
 void cidades(char tabuleiro[TAMANHO_MAX], int num)
 {
     char palavra[TAMANHO_MAX];
-    int cont;
-    int jogadas = 0;
-    bool final = true;
 
     switch (num){
-        case 1: // Paris
+        case 1: // São Paulo
         {
-            strcpy(palavra, "paris");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            strcpy(palavra, "sao-paulo");
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
-        case 2: // Nova York
+        case 2: // Salvador
         {
-            strcpy(palavra, "nova-york");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            strcpy(palavra, "salvador");
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
-        case 3: // Toquio
+        case 3: // Rio de Janeiro
         {
-           strcpy(palavra, "toquio");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            strcpy(palavra, "rio-de-janeiro");
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
-        case 4: // Sydney
+        case 4: // Brasilia
         {
-            strcpy(palavra, "sydney");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            strcpy(palavra, "brasilia");
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
-        case 5: // Cairo
+        case 5: // Maceió
         {
-            strcpy(palavra, "cairo");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-            
+            strcpy(palavra, "maceio");
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
     }
-
 }
 
 void VC(char tabuleiro[TAMANHO_MAX], int num)
 {
     char palavra[TAMANHO_MAX];
-    int cont;
-    int jogadas = 0;
-    bool final = true;
 
     switch (num){
         case 1: // DNA
         {
             strcpy(palavra, "dna");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 2: // Atomo
         {
             strcpy(palavra, "atomo");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 3: // Ecossistema
         {
-           strcpy(palavra, "ecossistema");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            strcpy(palavra, "ecossistema");
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 4: // Teorema
         {
             strcpy(palavra, "teorema");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
         case 5: // Neutrino
         {
             strcpy(palavra, "neutrino");
-            cont = contador(palavra);
-            imprimirJogo(cont, palavra, tabuleiro);
-            do
-            {
-                tabuleiro[TAMANHO_MAX] = verificar(tabuleiro, palavra, &jogadas, cont, &final);
-            } while (jogadas < 6 && final);
-
-            if (!final)
-            {
-                printf("\nParabens! Voce adivinhou a palavra e venceu o jogo!\n");
-            }
-            else
-            {
-                printf("Tentativas (%d/6)\n", jogadas);
-                printf("\nVoce atingiu o limite de jogadas. A palavra era: %s\n", palavra);
-            }
-            
+            jogo(palavra, tabuleiro);
             esperarEnter();
             break;
         }
     }
-
 }
-
-#define TAMANHO_MAX 20
 
 int main()
 {
